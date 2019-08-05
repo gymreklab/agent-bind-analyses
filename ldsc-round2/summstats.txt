@@ -1,0 +1,14 @@
+# See /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged
+
+Rheumatoid arthritis: (http://plaza.umin.ac.jp/yokada/datasource/software.htm)
+http://plaza.umin.ac.jp/yokada/datasource/files/GWASMetaResults/RA_GWASmeta_European_v2.txt.gz
+
+# Get columns: MarkerName Allele1 Allele2 Freq.Allele1.HapMapCEU p N
+# Has columns: SNPID	  Chr	  Position(hg19)		 A1	A2	OR(A1)	OR_95%CIlow	OR_95%CIup	P-val
+
+```
+/storage/resources/source/ldsc/munge_sumstats.py  \
+  --sumstats /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged/RA_GWASmeta_European_v2.txt.gz \
+  --out /storage/mgymrek/agent-bind/ldsc/summstats/RA_GWASmeta_European_v2 \
+  --snp SNPID --p P-val --signed-sumstats "OR(A1),1" --N-cas 14361 --N-con 43923
+```
