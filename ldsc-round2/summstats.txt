@@ -1,5 +1,6 @@
 # See /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged
 
+########################
 Rheumatoid arthritis: (http://plaza.umin.ac.jp/yokada/datasource/software.htm)
 http://plaza.umin.ac.jp/yokada/datasource/files/GWASMetaResults/RA_GWASmeta_European_v2.txt.gz
 
@@ -12,3 +13,43 @@ http://plaza.umin.ac.jp/yokada/datasource/files/GWASMetaResults/RA_GWASmeta_Euro
   --out /storage/mgymrek/agent-bind/ldsc/summstats/RA_GWASmeta_European_v2 \
   --snp SNPID --p P-val --signed-sumstats "OR(A1),1" --N-cas 14361 --N-con 43923
 ```
+
+########################
+Crohn's Disease https://www.ibdgenetics.org/downloads.html
+wget ftp://ftp.sanger.ac.uk/pub/consortia/ibdgenetics/gwas_ichip_meta_release.txt.gz
+
+```
+cat /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged/gwas_ichip_meta_release.txt | awk '{print $3 "\t" $11 "\t" $19 "\t" $4}' | sed 's/C$/\tCx/' | sed 's/G$/\tGx/' | sed 's/T$/\tTx/' | sed 's/A$/\tAx/' | sed 's/x$//' | sed 's/GWAS_A1A2/A1\tA2/' | grep -v "-" > /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged/gwas_ichip_meta_release_proc.txt
+
+/storage/resources/source/ldsc/munge_sumstats.py  \
+  --sumstats /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged/gwas_ichip_meta_release_proc.txt \
+  --out /storage/mgymrek/agent-bind/ldsc/summstats/CrohnsJostins \
+  --snp GWAS_SNP --p CD_META_P --a1 A1 --a2 A2 --signed-sumstats "CD_OR,1" --N 20883
+```
+
+########################
+Height http://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files
+
+wget http://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz
+
+```
+/storage/resources/source/ldsc/munge_sumstats.py  \
+  --sumstats /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged/Meta-analysis_Locke_et_al+UKBiobank_2018_UPDATED.txt.gz \
+  --out /storage/mgymrek/agent-bind/ldsc/summstats/HeightYengo \
+  --snp SNP --p P --a1 Tested_Allele --a2 Other_Allele --signed-sumstats "BETA,0" --N 795640
+```
+
+########################
+BMI 
+
+wget http://portals.broadinstitute.org/collaboration/giant/images/b/b7/GIANT_BMI_Speliotes2010_publicrelease_HapMapCeuFreq.txt.gz
+
+
+```
+/storage/resources/source/ldsc/munge_sumstats.py  \
+  --sumstats /storage/mgymrek/agent-bind/ldsc/summstats/pre-munged/GIANT_BMI_Speliotes2010_publicrelease_HapMapCeuFreq.txt \
+  --out /storage/mgymrek/agent-bind/ldsc/summstats/BMISpeliotes \
+  --a1-inc #--merge-alleles /storage/mgymrek/agent-bind/ldsc/resources/w_hm3.snplist
+```
+
+this failed for me. copied from Cynthia: /storage/mgymrek/agent-bind/ldsc/summstats/BMI.sumstats.gz

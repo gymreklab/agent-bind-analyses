@@ -4,10 +4,8 @@ DIR=$1
 PREFIX=$2
 
 # Get annot file per annotation
-header=""
 for bed in $(ls ${DIR}/beds/*)
 do
-    header="${header},$(basename $bed .bed)"
     for chrom in $(seq 1 22)
     do
 	cmd="python /storage/resources/source/ldsc/make_annot.py \
@@ -18,6 +16,11 @@ do
     done
 done | xargs -n1 -I% -P10 sh -c "%"
 
+header=""
+for bed in $(ls ${DIR}/beds/*)
+do
+    header="${header},$(basename $bed .bed)"
+done
 header=$(echo $header | sed 's/^,//')
 
 # Merge per chromosome
