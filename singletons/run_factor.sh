@@ -7,7 +7,6 @@ mkdir -p /storage/mgymrek/agent-bind/singletons/${factor}
 
 # Get overall distribution of raw scores
 cat /storage/pandaman/project/AgentBind-GM12878-DanQ-unfixed-rnn-trans/storage/AgentBind-GM12878-DanQ/tmp/${factor}+GM12878/seqs_one_hot_c/vis-weights-total/weight.txt | awk '(NR%2==0)' | sed 's/;/\n/g' | sort -k1,1g -T /storage/mgymrek/agent-bind/singletons/${factor} > /storage/mgymrek/agent-bind/singletons/${factor}/raw_vals.txt
-exit 0
 
 # Get per-SNP scores
 python get_snp_annots.py --fweight /storage/pandaman/project/AgentBind-GM12878-DanQ-unfixed-rnn-trans/storage/AgentBind-GM12878-DanQ/tmp/${factor}+GM12878/seqs_one_hot_c/vis-weights-total/weight.txt --resultdir /storage/mgymrek/agent-bind/singletons --TFname ${factor}
